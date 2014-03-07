@@ -19,15 +19,13 @@ var addVisit = function(input) {
 
 var addVisitToSite = function(site, allData, input) {
   var curDate = new Date();
-  var fetchedVisit;
-    
-  Visit.findOne({path: allData.pathname, query: allData.query}, function(err, visit) {
+    // TOADD , query: allData.query
+  Visit.findOne({path: allData.pathname}, function(err, visit) {
     if (err) return console.error(err);
     if (visit) {
       console.log("found corresponding visit")
       console.log(visit)
       visit.dates.push(curDate)
-      fetchedVisit = visit
     } else {
       var visitObj = {
         path: allData.pathname,
@@ -38,21 +36,22 @@ var addVisitToSite = function(site, allData, input) {
         imgPath: '',
         query: allData.query,
       };
-        
-      fetchedVisit = new Visit(visitObj);
+      console.log("create new visit")
+      visit = new Visit(visitObj);
     }
-  });
+    
+    site.lastVisitDate = curDate;
   
-  site.lastVisitDate = curDate;
-  
-  console.log("fetchedVisit")
-  console.log(fetchedVisit)
-  site.visits.push(fetchedVisit);
-  fetchedVisit.save(function(err, doc) {
-    if (err) { return console.error(err); }
-  });
-  site.save(function(err, doc) {
-    if (err) { return console.error(err); }
+    console.log("visit")
+    console.log(visit)
+    site.visits.push(visit);
+    visit.save(function(err, doc) {
+      if (err) { return console.error(err); }
+    });
+    site.save(function(err, doc) {
+      if (err) { return console.error(err); }
+    });
+    
   });
 }
 

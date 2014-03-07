@@ -1,22 +1,34 @@
 var siteCard = function(site) {
-    return "<ul class='no_item'>"+
-              "<li>"+site.host+"</li>"+
-              "<li>"+site.desc+"</li>"+
-              "<ul class=\"rig columns-3\">"+
-                "<li ng-repeat=\"visit in site.visits\" class=\"repeated-item\"><div compile=\"visitCard(visit)\"></div></li>"+
-              "</ul>"+
-              "<li><button class=\"btn btn-inverse btn-small delBtn\" ng-click=\"deleteSite('"+site._id+"')\"><i class=\"icon-white icon-remove\"></i></button></li>"+
-            "</ul>";
+  var siteBegin = "<ul class='no_item'>"+
+            "<li>"+site.host+"</li>"+
+            "<li>"+site.desc+"</li>"+
+            "<ul class=\"rig columns-3\">";
+  var siteRepeated = "";
+  var visits = site.visits;
+  var visitsL = visits.length;
+  for(var i=0;i<visitsL;i++) {
+    var visitBegin = "<li>"+
+                      "<ul class='no_item'>"+
+                        "<li>"+visits[i].path+"</li>"+
+                        "<li>"+visits[i].desc+"</li>"+
+                        "<ul class=\"rig columns-3\">";
+    var visitRepeated = "";
+    for(var j in visits[i].dates) {
+      visitRepeated += "<li>"+visits[i].dates[j]+"</li>";
+    }
+    var visitEnd = "</ul>"+
+                   "</ul>"+
+                   "</li>";
+    siteRepeated += visitBegin + visitRepeated + visitEnd;
+  }
+  var siteEnd =   "</ul>"+
+                "<li><button class=\"btn btn-inverse btn-small delBtn\" ng-click=\"deleteSite('"+site._id+"')\"><i class=\"icon-white icon-remove\"></i></button></li>"+
+                "</ul>";
+  return siteBegin + siteRepeated + siteEnd;
 };
   
 var visitCard = function(visit) {
-    return "<ul class='no_item'>"+
-              "<li>"+visit.path+"</li>"+
-              "<li>"+visit.desc+"</li>"+
-              "<ul class=\"rig columns-3\">"+
-                "<li ng-repeat=\"date in visit.dates\" class=\"repeated-item\">{{date}}</li>"+
-              "</ul>"+
-            "</ul>";
+    return 
 };
   
 var ajsCompile;

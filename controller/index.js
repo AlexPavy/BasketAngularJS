@@ -11,7 +11,9 @@ exports.addVisit = function(req, res) {
 };
 
 var sendVisits = function(req, res) {
-  Site.find(function (err, sites){
+  Site.find()
+  .populate('visits')
+  .exec(function (err, sites){
     if (err) { return res.send(err); }
     // console.log("sending sites");
     // console.log(sites);
