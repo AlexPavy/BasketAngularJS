@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en" ng-app="basketMVC">
+  <head>
+    <title>Simple App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-responsive.min.css">
+    
+    <link rel="stylesheet" href="/css/customStyle.css">
+  </head>
+  
+  <body ng-controller="mainController">
+
+    <div class="jumbotron text-center">
+			<h1>Simple app</h1>
+		</div>
+
+    <div class="isolated">
+    
+      <form ng-submit="createSite()" role="form" class="form-horizontal">
+        <div class="form-group">
+          <label for="inURL" class="col-sm-2 control-label">URL</label>
+          <div class="col-sm-10">
+            <input id="inURL" type="text" class="form-control wideParam" ng-model="inURL" placeholder="Enter URL">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="descURL" class="col-sm-2 control-label">Notes</label>
+          <div class="col-sm-10">
+            <textarea id="descURL" ng-model="descURL" class="form-control wideParam" placeholder="Add note to the website" rows="3"></textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+      
+    <div class="isolated">
+      <input id="inURL" type="text" class="form-control wideParam" ng-model="searchText" placeholder="Search">
+    </div>
+    
+    <div class="VisitsGrid isolated">
+      <ul class="rig columns-3" id="sitesGrid">
+        <li ng-repeat="site in sites | filter:searchText" class="repeated-item">
+          <div compile="siteCard(site)"></div>
+        </li>
+      </ul>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
+    <script src="/js/angular-animate.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    
+    <script src="/js/mvc.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
+  </body>
+</html>

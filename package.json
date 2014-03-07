@@ -1,0 +1,15 @@
+{
+  "name": "chat-example",
+  "version": "0.0.0",
+  "description": "An application to store urls",
+  "main": "server.js",
+  "repository": "",
+  "author": "Alex Pavy",
+  "dependencies": {
+    "async": "*",
+    "express": "*",
+    "socket.io": "*",
+    "mongodb": "*",
+    "mongoose": "*"
+  }
+}

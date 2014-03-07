@@ -1,0 +1,93 @@
+var url = require('url');
+var M = require('../model/Sites');
+var Site = M.db.model('Site', M.SiteSchema);
+var Visit = M.db.model('Visit', M.VisitSchema);
+
+var addVisit = function(input) {
+  var allData = url.parse(input.url, true, true);
+  Site.findOne({host: allData.host}, function(err, site) {
+    if (err) return console.error(err);
+    if (site) {
+      console.log("found corresponding site")
+      console.log(site)
+      addVisitToSite(site, allData, input);
+    } else {
+      addNewSite(allData, input);
+    }
+  });
+}
+
+var addVisitToSite = function(site, allData, input) {
+  var curDate = new Date();
+  var fetchedVisit;
+    
+  Visit.findOne({path: allData.pathname, query: allData.query}, function(err, visit) {
+    if (err) return console.error(err);
+    if (visit) {
+      console.log("found corresponding visit")
+      console.log(visit)
+      visit.dates.push(curDate)
+      fetchedVisit = visit
+    } else {
+      var visitObj = {
+        path: allData.pathname,
+        desc: input.desc,
+        dates: [curDate],
+        device: '',
+        browser: '',
+        imgPath: '',
+        query: allData.query,
+      };
+        
+      fetchedVisit = new Visit(visitObj);
+    }
+  });
+  
+  site.lastVisitDate = curDate;
+  
+  console.log("fetchedVisit")
+  console.log(fetchedVisit)
+  site.visits.push(fetchedVisit);
+  fetchedVisit.save(function(err, doc) {
+    if (err) { return console.error(err); }
+  });
+  site.save(function(err, doc) {
+    if (err) { return console.error(err); }
+  });
+}
+
+var addNewSite = function(allData, input) {
+  var curDate = new Date();
+  
+  var siteObj = {
+    host: allData.host,
+    desc: 'Site desc',
+    imgPath: '',
+    title: 'Site Title',
+    visits: [],
+    lastVisitDate: curDate,
+  };
+  
+  var visitObj = {
+    path: allData.pathname,
+    desc: input.desc,
+    dates: [curDate],
+    device: '',
+    browser: '',
+    imgPath: '',
+    query: allData.query,
+  };
+  
+  var visit = new Visit(visitObj);
+  var site = new Site(siteObj);
+  
+  site.visits.push(visit);
+  visit.save(function(err, doc) {
+    if (err) { return console.error(err); }
+  });
+  site.save(function(err, doc) {
+    if (err) { return console.error(err); }
+  });
+}
+
+exports.addVisit = addVisit;
