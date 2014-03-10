@@ -1,5 +1,5 @@
 .isolated {
-    margin: 40px;
+  margin: 40px;
 }
 
 .no_item {
@@ -14,8 +14,13 @@
 
 .delBtn {
   position: absolute;
-  top:7px;
-  right:7px;
+  top:1px;
+  right:1px;
+}
+
+.bookmarks {
+  overflow: auto;
+  height: 400px;
 }
 
 /* Animations ****************************************************/
@@ -80,8 +85,27 @@
   to { opacity:0; }
 }
 
-/* Responsive image grid ****************************************************/
+/* Small Responsive image grid ****************************************************/
+ul.srimg {
+    width: 100%;
+    margin:0;padding:0; /* CSS Reset */
+    /*max-width: 1000px; /* restrict the width */
+    margin: 7px; /* center it */
+}
+ul.srimg li {
+    /* width: 33.3333%; */
+    /*float:left; /* squish them together */
+    list-style-type: none; /* remove the dots */
+    display:block; /* IMPORTANT */
+}
 
+@media screen and (max-width: 800px) {
+    .item{
+        width: 100%;
+    }
+}
+
+/* Responsive image grid ****************************************************/
 ul.rig {
 	list-style: none;
 	font-size: 0px;
