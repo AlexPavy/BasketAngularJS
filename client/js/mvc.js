@@ -1,9 +1,9 @@
 var siteCard = function(site) {
   var siteBegin = "<ul class='no_item'>"+
-            "<li><a href=http://"+site.host+">"+site.host+"</a></li>"+
-            "<li>"+site.desc+"</li>"+
-            "<li>"+
-              "<ul class=\"srimg\">";
+                    "<li><a href=http://"+site.url+">"+site.url+"</a></li>"+
+                    "<li>"+site.desc+"</li>"+
+                    "<li>"+
+                      "<ul class=\"srimg\">";
   var siteRepeated = "";
   var visits = site.visits;
   var visitsL = visits.length;
@@ -26,9 +26,17 @@ var siteCard = function(site) {
   }
   var siteEnd =     "</ul>"+
                   "<li><button class=\"btn btn-inverse btn-small delBtn\" ng-click=\"deleteSite('"+site._id+"')\"><i class=\"icon-white icon-remove\"></i></button></li>"+
-                  "</ul>"+
-                "</li>";
+                  "</li>"+
+                "</ul>";
   return siteBegin + siteRepeated + siteEnd;
+};
+
+var smallCard = function(content) {
+  var card ="<ul class='no_item'>"+
+              "<li><a href=http://"+content.url+">"+content.url+"</a></li>"+
+              "<li>"+content.desc+"</li>"+
+            "</ul>";
+  return card;
 };
   
 var visitCard = function(visit) {
@@ -59,14 +67,19 @@ var basketMVC = angular.module('basketMVC', ['ngAnimate'], function($compileProv
 function mainController($scope, $http, $sce, $compile) {
   ajsCompile = $compile;
   ajsScope = $scope;
-  $http.get('/main')
-		.success(function(data) {
-			$scope.sites = data;
-			console.log(data);
-		})
-		.error(function(data) {
-			console.log('Error: ' + data);
-		});
+  
+  $scope.getVisits = function() {
+    $http.get('/main')
+    	.success(function(data) {
+    		$scope.sites = data;
+    		console.log(data);
+    	})
+    	.error(function(data) {
+    		console.log('Error: ' + data);
+    	});
+	};
+  
+  $scope.getVisits();
 
   $scope.createSite = function() {
     var visitData = {
@@ -76,11 +89,15 @@ function mainController($scope, $http, $sce, $compile) {
 		$http.post('/addURL', visitData)
 			.success(function(data) {
 				$scope.sites = data;
-				// console.log(data);
+				console.log(data);
 			})
 			.error(function(data) {
 				console.log('Error: ' + data);
 			});
+			
+		setTimeout(function () {
+		  $scope.getVisits();
+    }, 500);
 	};
 
 	$scope.deleteSite = function(id) {

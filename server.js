@@ -19,7 +19,9 @@ app.use(express.bodyParser());
 
 // Main App
 app.post('/addURL', controller.addVisit);
-app.get('/main', controller.sendVisits);
+app.post('/updateNode', controller.updateNode);
+app.get('/main', controller.sendAllData);
+app.get('/bookmarks', controller.sendBookmarks);
 app.delete('/remove/:site_id', controller.removeSite);
 app.get('*', controller.index);
 

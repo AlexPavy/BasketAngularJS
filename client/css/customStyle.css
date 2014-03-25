@@ -20,7 +20,7 @@
 
 .bookmarks {
   overflow: auto;
-  height: 400px;
+  width: 50%;
 }
 
 /* Animations ****************************************************/

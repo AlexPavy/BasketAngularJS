@@ -1,3 +1,135 @@
 jsTree: good
 zTree: good but old
 http://stackoverflow.com/questions/11000095/dnd-how-to-restrict-dropping-to-certain-node-types
+
+http://www.projekt.gkb.com.pl/lib/jsTree/demo/context.html
+
+NEWS
+http://readwrite.com/2014/03/10/google-html5-strategy#awesm=~oyoyRZLlkx7xUR
+http://readwrite.com/2014/03/12/apple-ios-8-fix-maps#awesm=~oyoCDZwM5IjnMz
+http://readwrite.com/2014/02/24/apple-ios-homescreen-android-facebook-betaworks#awesm=~oyoRJtJ9SZEajR
+
+GRAPH DB
+http://en.wikipedia.org/wiki/Bulk_Synchronous_Parallel
+
+Neo4j commands:
+http://www.neo4j.org/learn/online_course
+
+ MATCH (actor)-[:ACTED_IN]->(movie),
+       (director)-[:DIRECTED]->(movie)
+ RETURN actor.name, movie.title, director.name;
+
+ MATCH (a:Person)-[ACTED_IN]->()
+ RETURN a.name, a.born
+ ORDER BY a.born
+
+MATCH (a)-[:ACTED_IN]->(m)
+ RETURN a.name, m.title
+ SKIP 10 
+ LIMIT 10;
+
+MATCH (a)-[:ACTED_IN]->()
+RETURN DISTINCT a
+ORDER BY a.born
+LIMIT 5
+
+MATCH (tom:Person)-[:ACTED_IN]->(movie)
+WHERE tom.name="Tom Hanks"
+AND movie.released > 2000
+RETURN movie.title;
+
+MATCH (keanu:Person)-[r:ACTED_IN]->(movie)
+WHERE keanu.name="Keanu Reeves"
+AND "Neo" IN r.roles
+RETURN movie.title;
+
+MATCH (tom:Person {name:"Tom Hanks"})-[:ACTED_IN]->(movie),
+      (movie)<-[:ACTED_IN]-(a:Person)
+WHERE a.born < tom.born
+RETURN DISTINCT a.name, (tom.born - a.born) AS diff;
+
+Here's a more complex example - actors who worked with Gene Hackman, but not when he was also working with Robin Williams.
+
+MATCH (gene:Person {name:"Gene Hackman"})-[:ACTED_IN]->(movie),
+      (other)-[:ACTED_IN]->(movie), 
+      (robin:Person {name:"Robin Williams"})
+WHERE NOT (robin)-[:ACTED_IN]->(movie)
+RETURN DISTINCT other;
+
+CREATE INDEX ON :Person(name);
+MATCH (gene:Person)-[:ACTED_IN]->(m),
+ (other)-[:ACTED_IN]->(m)
+WHERE gene.name="Gene Hackman"
+RETURN DISTINCT other;
+
+count(x) Count the number of occurrences
+min(x) Get the lowest value
+max(x) Get the highest value
+avg(x) Get the average of a numeric value
+sum(x) Sum up values
+collect(x) Collect all the values into an collection
+
+MATCH (a:Person)-[:ACTED_IN]->(m)
+ RETURN a.name, collect(m.title);
+For every Person who has acted in at least one movie, the query will RETURN their name and an array of strings containing the movie titles.
+
+MATCH (a:Person)-[:ACTED_IN]->(m)
+RETURN a.name, count(m)
+ORDER BY count(m) DESC
+LIMIT 10;
+
+Recommandation:
+MATCH (keanu:Person {name:"Keanu Reeves"})-[:ACTED_IN]->()<-[:ACTED_IN]-(c),
+      (c)-[:ACTED_IN]->()<-[:ACTED_IN]-(coc)
+WHERE coc <> keanu  AND NOT((keanu)-[:ACTED_IN]->()<-[:ACTED_IN]-(coc))
+RETURN coc.name, count(coc)
+ORDER BY count(coc) DESC
+LIMIT 3;
+
+CREATE (movie:Movie {title: "Mystic River", released:1993}) 
+RETURN movie;
+
+MATCH (movie:Movie)
+WHERE movie.title="Mystic River"
+SET movie.released = 2003
+RETURN movie;
+
+MATCH (me:Person {name:"My Name"}), 
+      (movie:Movie {title:"Mystic River"})      
+CREATE (me)-[:REVIEWED {rating:80, summary:"tragic character movie"}]->(movie);
+
+MERGE has a get-or-create semantics. It tries to find the patterns you specify. If it finds them, it will return the data. Otherwise it creates the structure in the graph.
+
+MATCH (clint:Person),(mystic:Movie)      
+WHERE clint.name="Clint Eastwood" AND mystic.title="Mystic River"
+MERGE (clint)-[:DIRECTED]->(mystic)
+RETURN clint, mystic;
+
+MATCH (a)-[:ACTED_IN|:DIRECTED]->()<-[:ACTED_IN|:DIRECTED]-(b)
+WHERE NOT (a)-[:KNOWS]-(b)
+MERGE (a)-[:KNOWS]->(b);
+
+MATCH (movie:Movie {title:"Mystic River"),
+      (kevin:Person {name:"Kevin Bacon"})
+MERGE (kevin)-[r:ACTED_IN]->(movie)
+ON CREATE SET r.roles=["Sean"]
+
+Delete:
+
+MATCH (me:Person {name="My Name"})
+OPTIONAL MATCH (me)-[r]-()
+DELETE me,r;
+
+ friends of friends you would use [:FRIENDS*2]
+ 
+MATCH (keanu:Person {name:"Keanu Reeves"}), 
+      (kevin:Person {name:"Kevin Bacon"})
+MATCH p=shortestPath((keanu)-[:KNOWS*]->(kevin))
+RETURN length(p), nodes(p);
+
+extract:
+MATCH (keanu:Person {name:"Keanu Reeves"}), 
+      (kevin:Person {name:"Kevin Bacon"})
+MATCH p=shortestPath((keanu)-[:KNOWS*]->(kevin))
+RETURN [ n in nodes(p)[1..-1] | n.name ];
+[1..-1] : second to before last

@@ -1,5 +1,5 @@
 {
-  "name": "chat-example",
+  "name": "WebBasket",
   "version": "0.0.0",
   "description": "An application to store urls",
   "main": "server.js",
@@ -10,6 +10,7 @@
     "express": "*",
     "socket.io": "*",
     "mongodb": "*",
-    "mongoose": "*"
+    "mongoose": "*",
+    "neo4j": "*"
   }
 }
