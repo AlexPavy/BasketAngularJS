@@ -11,9 +11,6 @@
     <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>-->
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <link rel="stylesheet" href="/css/style.css" type="text/css">
-  	<script type="text/javascript" src="/js/jquery.cookie.js"></script>
-  	<script type="text/javascript" src="/js/jquery.hotkeys.js"></script>
-  	<script type="text/javascript" src="/js/jquery.jstree.js"></script>
   	
   </head>
   
@@ -41,16 +38,20 @@
       </form>
     </div>
     
+    
+    <!--<div compile="test()">-->
+    <!--</div>-->
+    
     <div class="isolated">
       <div id="bookmarks" class="bookmarks"></div>
     </div>
-      
+
     <div class="isolated">
       <input id="inURL" type="text" class="form-control wideParam" ng-model="searchText" placeholder="Search">
     </div>
     
     <div class="VisitsGrid isolated">
-      <ul class="rig columns-3" id="sitesGrid">
+      <ul class="rig columns-1" id="sitesGrid">
         <li ng-repeat="site in sites | filter:searchText" class="repeated-item">
           <div compile="siteCard(site)"></div>
         </li>

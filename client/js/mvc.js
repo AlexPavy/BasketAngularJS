@@ -3,7 +3,10 @@ var siteCard = function(site) {
             "<li><a href=http://"+site.host+">"+site.host+"</a></li>"+
             "<li>"+site.desc+"</li>"+
             "<li>"+
-              "<ul class=\"srimg\">";
+              "<div id=\"slider"+site._id+"\" class=\"slider\">"+
+                "<a href=\"#\" onclick=\"return false;\" id=\"next"+site._id+"\" class=\"next\">></a>"+
+                "<a href=\"#\" onclick=\"return false;\" id=\"prev"+site._id+"\" class=\"prev\"><</a>"+
+                "<ul class=\"srimg\">";
   var siteRepeated = "";
   var visits = site.visits;
   var visitsL = visits.length;
@@ -24,11 +27,20 @@ var siteCard = function(site) {
                   "</li>";
     siteRepeated += visitBegin + visitRepeated + visitEnd;
   }
-  var siteEnd =     "</ul>"+
+  var siteEnd =       "</ul>"+
+                    "</div>"+
                   "<li><button class=\"btn btn-inverse btn-small delBtn\" ng-click=\"deleteSite('"+site._id+"')\"><i class=\"icon-white icon-remove\"></i></button></li>"+
                   "</ul>"+
                 "</li>";
   return siteBegin + siteRepeated + siteEnd;
+};
+
+var smallCard = function(content) {
+  var card ="<ul class='no_item'>"+
+              "<li><a href=http://"+content.url+">"+content.url+"</a></li>"+
+              "<li>"+content.desc+"</li>"+
+            "</ul>";
+  return card;
 };
   
 var visitCard = function(visit) {
@@ -37,6 +49,12 @@ var visitCard = function(visit) {
   
 var ajsCompile;
 var ajsScope;
+var sites;
+
+function setSites($scope, data) {
+  $scope.sites = data;
+  sites = data;
+}
 
 // public/core.js
 var basketMVC = angular.module('basketMVC', ['ngAnimate'], function($compileProvider) {
@@ -59,14 +77,19 @@ var basketMVC = angular.module('basketMVC', ['ngAnimate'], function($compileProv
 function mainController($scope, $http, $sce, $compile) {
   ajsCompile = $compile;
   ajsScope = $scope;
-  $http.get('/main')
-		.success(function(data) {
-			$scope.sites = data;
-			console.log(data);
-		})
-		.error(function(data) {
-			console.log('Error: ' + data);
-		});
+  
+  $scope.getVisits = function() {
+    $http.get('/main')
+    	.success(function(data) {
+    		setSites($scope, data);
+    		console.log(data);
+    	})
+    	.error(function(data) {
+    		console.log('Error: ' + data);
+    	});
+	};
+  
+  $scope.getVisits();
 
   $scope.createSite = function() {
     var visitData = {
@@ -75,32 +98,30 @@ function mainController($scope, $http, $sce, $compile) {
     }
 		$http.post('/addURL', visitData)
 			.success(function(data) {
-				$scope.sites = data;
-				// console.log(data);
+				setSites($scope, data);
+				console.log(data);
 			})
 			.error(function(data) {
 				console.log('Error: ' + data);
 			});
+			
+		setTimeout(function () {
+		  $scope.getVisits();
+    }, 500);
 	};
 
 	$scope.deleteSite = function(id) {
 		$http.delete('/remove/' + id)
 		.success(function(data) {
-			$scope.sites = data;
+			setSites($scope, data);
 			// console.log(data);
 		})
 		.error(function(data) {
 			console.log('Error: ' + data);
 		});
 	};
-	
-
-  $scope.to_trusted = function(html_code) {
-    return $sce.trustAsHtml(html_code);
-}
 
   $scope.siteCard = siteCard;
-  $scope.html = 'Hello {{name}}';
 }
 
 basketMVC.controller('mainController', mainController);

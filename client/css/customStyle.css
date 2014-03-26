@@ -87,16 +87,13 @@
 
 /* Small Responsive image grid ****************************************************/
 ul.srimg {
-    width: 100%;
-    margin:0;padding:0; /* CSS Reset */
-    /*max-width: 1000px; /* restrict the width */
-    margin: 7px; /* center it */
+    max-width: 1000px;
+    margin: 7px;
 }
-ul.srimg li {
-    /* width: 33.3333%; */
-    /*float:left; /* squish them together */
-    list-style-type: none; /* remove the dots */
-    display:block; /* IMPORTANT */
+ul.srimg > li {
+    margin:5px;
+    /*float:left;*/
+    list-style-type: none;
 }
 
 @media screen and (max-width: 800px) {
@@ -106,64 +103,114 @@ ul.srimg li {
 }
 
 /* Responsive image grid ****************************************************/
-ul.rig {
+ul {
 	list-style: none;
-	font-size: 0px;
-	margin-left: -2.5%; /* should match li left margin */
 }
 ul.rig > li {
 	display: inline-block;
-	padding: 10px;
 	margin: 0 0 2.5% 2.5%;
-	background: #fff;
 	border: 1px solid #ddd;
-	font-size: 16px;
-	font-size: 1rem;
-	vertical-align: top;
 	box-shadow: 0 0 5px #ddd;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
+	padding: 8px 8px 8px 0;
 }
-ul.rig li img {
+ul.rig > li > img {
 	max-width: 100%;
 	height: auto;
 	margin: 0 0 10px;
 }
-ul.rig li h3 {
-	margin: 0 0 5px;
-}
-ul.rig li p {
-	font-size: .9em;
-	line-height: 1.5em;
-	color: #999;
-}
+
 /* class for 2 columns */
-ul.rig.columns-2 li {
+ul.rig.columns-2 > li {
 	width: 47.5%; /* this value + 2.5 should = 50% */
 }
 /* class for 3 columns */
-ul.rig.columns-3 li {
+ul.rig.columns-3 > li {
 	width: 30.83%; /* this value + 2.5 should = 33% */
 }
 /* class for 4 columns */
-ul.rig.columns-4 li {
+ul.rig.columns-4 > li {
 	width: 22.5%; /* this value + 2.5 should = 25% */
 }
  
 @media (max-width: 480px) {
-	ul.grid-nav li {
+	ul.grid-nav > li {
 		display: block;
 		margin: 0 0 5px;
 	}
-	ul.grid-nav li a {
+	ul.grid-nav > li > a {
 		display: block;
 	}
 	ul.rig {
 		margin-left: 0;
 	}
-	ul.rig li {
+	ul.rig > li {
 		width: 100% !important; /* over-ride all li styles */
-		margin: 0 0 20px;
 	}
+}
+
+
+/* Simple slider ****************************************************/
+
+html {
+  border-top: 5px solid #fff;
+  background: #58DDAF;
+  color: #2a2a2a;
+}
+
+.slider {
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto 0 auto;
+  border-radius: 4px;
+}
+
+.slider > ul {
+  float: left;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.slider > ul > li {
+  display: block;
+  float: left;
+  background: #ccc;
+  /*line-height: 300px;*/
+  width: 300px;
+  height: 200px;
+}
+
+a.prev, a.next {
+  position: absolute;
+  top: 40%;
+  z-index: 999;
+  display: block;
+  padding: 9px 6px;
+  width: auto;
+  height: auto;
+  background: #2a2a2a;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 18px;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+a.prev:hover, a.next:hover {
+  opacity: 1;
+  -webkit-transition: all 0.2s ease;
+}
+
+a.prev {
+  border-radius: 0 2px 2px 0;
+}
+
+a.next {
+  right: 0;
+  border-radius: 2px 0 0 2px;
 }
