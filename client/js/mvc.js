@@ -12,11 +12,11 @@ var siteCard = function(site) {
   var visitsL = visits.length;
   for(var i=0;i<visitsL;i++) {
     var visitBegin = "<li>"+
-                      "<ul class='srimg'>"+
+                      "<ul class=\"visitC\">"+
                         "<li><a href="+visits[i].url+">"+visits[i].path+"</a></li>"+
                         "<li>"+visits[i].desc+"</li>"+
                         "<li>"+
-                          "<ul class=\"srimg\">";
+                          "<ul>";
     var visitRepeated = "";
     for(var j in visits[i].dates) {
       visitRepeated += "<li>"+visits[i].dates[j]+"</li>";
@@ -68,6 +68,7 @@ var basketMVC = angular.module('basketMVC', ['ngAnimate'], function($compileProv
         function(value) {
           element.html(value);
           $compile(element.contents())(scope);
+          executeApp();
         }
       );
     };

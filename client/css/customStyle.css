@@ -86,10 +86,12 @@
 }
 
 /* Small Responsive image grid ****************************************************/
-ul.srimg {
-    max-width: 1000px;
-    margin: 7px;
+
+.visitC {
+  margin-left: 50px;
+  max-width: 1000px;
 }
+
 ul.srimg > li {
     margin:5px;
     /*float:left;*/
@@ -171,6 +173,7 @@ html {
   float: left;
   position: relative;
   margin: 0;
+  left:-15px;
   padding: 0;
   list-style: none;
 }
@@ -180,7 +183,7 @@ html {
   float: left;
   background: #ccc;
   /*line-height: 300px;*/
-  width: 300px;
+  width: 315px;
   height: 200px;
 }
 
@@ -213,4 +216,5 @@ a.prev {
 a.next {
   right: 0;
   border-radius: 2px 0 0 2px;
+  margin-right: 10px;
 }

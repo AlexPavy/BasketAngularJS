@@ -12,57 +12,63 @@ $("#clickme").click(function () {
   });
 });
 
+function executeApp(){
+  console.log("execApp");
+}
+
 $(document).ready(function () {
   
   setTimeout(function () {
     for(var i in sites){
-      console.log("setting slider")
-      console.log('#slider'+sites[i]._id+' > ul')
-  	  var slideCount = $('#slider'+sites[i]._id+' > ul > li').length;
-    	var slideWidth = $('#slider'+sites[i]._id+' > ul > li').width();
-    	var slideHeight = $('#slider'+sites[i]._id+' > ul > li').height();
+      var slider = $('#slider'+sites[i]._id);
+      console.log(slider)
+  	  var slideCount = slider.find(' > ul > li').length;
+    	var slideWidth = slider.find(' > ul > li').width();
+    	var slideHeight = slider.find(' > ul > li').height();
     	var sliderUlWidth = slideCount * slideWidth;
     	
-    	$('#slider'+sites[i]._id).css({ width: slideWidth, height: slideHeight });
+    	slider.css({ width: slideWidth, height: slideHeight });
     	
-    	$('#slider'+sites[i]._id+' > ul').css({ width: sliderUlWidth, marginLeft: - slideWidth });
+    	slider.find(' > ul').css({ width: sliderUlWidth });
     	
-      $('#slider'+sites[i]._id+' > ul > li:last-child').prependTo('#slider'+sites[i]._id+' > ul');
+      slider.find(' > ul > li:last-child').prependTo(slider.find(' > ul'));
       
-      console.log("setting click for , #prev"+sites[i]._id);
-      $('#prev'+sites[i]._id).on("click", function (e) {
-        console.log("moving left "+sites[i]._id)
-          moveLeft(sites[i]._id);
+      console.log("prev", slider.find('.prev').attr('id'));
+      slider.find('.prev').on("click", function (e) {
+          moveLeft(this);
           return false;
       });
-      console.log("set click for ", sites[i]._id)
-  
-      $('#next'+sites[i]._id).on("click", function (e) {
-        console.log("moving right "+sites[i]._id)
-          moveRight(sites[i]._id);
+      
+      console.log("next", slider.find('.next'));
+      slider.find('.next').on("click", function (e) {
+          moveRight(this);
           return false;
       });
     }
   
-    function moveLeft(sid) {
+    function moveLeft(elem) {
+      console.log($(elem).attr('id'));
+      // console.log("last", $(elem).parent().find('> ul').find('> li').last())
+      // console.log("first", $(elem).parent().find('> ul').find('> li').first())
       
-      console.log(sid);
       
-        $('#slider'+sid+' > ul').animate({
-            left: + slideWidth
-        }, 200, function () {
-            $('#slider'+sid+' > ul > li:last-child').prependTo('#slider'+sid+' > ul');
-            $('#slider'+sid+' > ul').css('left', '');
-        });
+      $(elem).parent().find('> ul').animate({
+          left: + slideWidth
+      }, 200, function () {
+          $(this).find('> li:last-child').prependTo($(this));
+          $(this).css({'left': '-15px'});
+      });
     };
   
-    function moveRight(sid) {
-        $('#slider'+sid+' > ul').animate({
-            right: + slideWidth
-        }, 200, function () {
-            $('#slider'+sid+' > ul > li:first-child').appendTo('#slider'+sid+' > ul');
-            $('#slider'+sid+' > ul').css('right', '');
-        });
+    function moveRight(elem) {
+      console.log($(elem).attr('id'));
+      
+      $(elem).parent().find('> ul').animate({
+          right: + slideWidth
+      }, 200, function () {
+          $(this).find('> li:first-child').appendTo($(this));
+          $(this).css('left', '-15px');
+      });
     };
   }, 2000);
 });    
