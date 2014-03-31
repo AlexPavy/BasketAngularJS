@@ -88,14 +88,20 @@
 /* Small Responsive image grid ****************************************************/
 
 .visitC {
-  margin-left: 50px;
+  margin: 5px 60px 15px 50px;
   max-width: 1000px;
+  display: block;
+}
+
+ul.srimg {
+  width: 1500px;
 }
 
 ul.srimg > li {
     margin:5px;
-    /*float:left;*/
+    float: left;
     list-style-type: none;
+    display: block;
 }
 
 @media screen and (max-width: 800px) {
@@ -149,7 +155,7 @@ ul.rig.columns-4 > li {
 		margin-left: 0;
 	}
 	ul.rig > li {
-		width: 100% !important; /* over-ride all li styles */
+		width: 100%
 	}
 }
 
@@ -173,7 +179,7 @@ html {
   float: left;
   position: relative;
   margin: 0;
-  left:-15px;
+  /*left:-15px;*/
   padding: 0;
   list-style: none;
 }
@@ -183,8 +189,8 @@ html {
   float: left;
   background: #ccc;
   /*line-height: 300px;*/
-  width: 315px;
-  height: 200px;
+  /*width: 315px;*/
+  /*height: 200px;*/
 }
 
 a.prev, a.next {
@@ -216,5 +222,5 @@ a.prev {
 a.next {
   right: 0;
   border-radius: 2px 0 0 2px;
-  margin-right: 10px;
+  /*margin-right: 10px;*/
 }
