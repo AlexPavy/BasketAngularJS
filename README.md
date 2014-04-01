@@ -1,7 +1,7 @@
 BasketAngularJS
 ===============
 
-Functionalitites:
+Functionalities:
 - Enter any http url with description
 - Ajax storage on mongoDB
 - urls are parsed and displayed as visit cards
