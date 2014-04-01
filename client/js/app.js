@@ -13,7 +13,6 @@ $("#clickme").click(function () {
 });
 
 function moveLeft(elem) {
-  // console.log($(elem).attr('id'));
   var slider_ul = $(elem).parent().find('> ul');
   var slideWidth = slider_ul.find('> li').width();
   console.log("slideWidth", slideWidth);
