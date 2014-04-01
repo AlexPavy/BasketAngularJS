@@ -1,6 +1,6 @@
 var siteCard = function(site) {
   var siteBegin = "<ul class='no_item'>"+
-            "<li><a href=http://"+site.host+">"+site.host+"</a></li>"+
+            "<li><a href=\"http://"+site.host+"\">"+site.host+"</a></li>"+
             "<li>"+site.desc+"</li>"+
             "<li>"+
               "<div id=\"slider"+site._id+"\" class=\"slider\">"+
@@ -9,11 +9,17 @@ var siteCard = function(site) {
                 "<ul class=\"srimg\">";
   var siteRepeated = "";
   var visits = site.visits;
-  var visitsL = visits.length;
+  var visitsL = 0;
+  if(visits) {
+    visitsL = visits.length;
+  }
   for(var i=0;i<visitsL;i++) {
     var visitBegin = "<li>"+
                       "<ul class=\"visitC\">"+
-                        "<li><a href="+visits[i].url+">"+visits[i].path+"</a></li>"+
+                        "<li><img src=\"http://images.shrinktheweb.com/xino.php?stwembed=1&amp;stwaccesskeyid=f00c1befc05dd0e&amp;stwsize=sm&amp;stwurl="+
+                          "http://"+site.host+visits[i].path
+                        +"\" /></li>"+
+                        "<li><a href=\"http://"+site.host+visits[i].path+"\">"+visits[i].path+"</a></li>"+
                         "<li>"+visits[i].desc+"</li>"+
                         "<li>"+
                           "<ul>";
@@ -115,11 +121,16 @@ function mainController($scope, $http, $sce, $compile) {
 		$http.delete('/remove/' + id)
 		.success(function(data) {
 			setSites($scope, data);
-			// console.log(data);
+			console.log(data);
+			console.log($scope.sites);
 		})
 		.error(function(data) {
 			console.log('Error: ' + data);
 		});
+		
+		setTimeout(function () {
+		  $scope.getVisits();
+    }, 500);
 	};
 
   $scope.siteCard = siteCard;

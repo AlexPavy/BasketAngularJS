@@ -89,4 +89,29 @@ var addNewSite = function(allData, input) {
   });
 }
 
+exports.deleteSite = function(req, res){
+  console.log("req.params.site_id", req.params.site_id)
+  Site.findById(req.params.site_id)
+  .exec(function (err, site){
+    console.log("site", site)
+    var visits = site.visits;
+    if (err) { return res.send(err); }
+    for(var i in visits){
+      console.log("visitId", visits[i])
+      Visit.remove({
+  			_id : visits[i]
+  		}, function(err, todo) {
+  			if (err)
+  				return res.send(err);
+  		});
+    }
+    Site.remove({
+			_id : req.params.site_id
+		}, function(err, todo) {
+			if (err)
+				return res.send(err);
+		});
+  });
+}
+
 exports.addVisit = addVisit;
